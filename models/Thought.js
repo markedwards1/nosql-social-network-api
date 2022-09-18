@@ -46,23 +46,10 @@ const thoughtSchema = new Schema(
 
 
     );
-   
-    
+      
     const Thought = model('thought', thoughtSchema);
     
-// const thought = new Thought({
-//     thoughtText: "yeah babes",
-//     username: "mark",
-//     reactions: [
-//         {
-//             reactionBody: "im your reaction body",
-//             username: "probably your mother"
-//         }
-//     ]
-    
-// })
-// console.log(thought);
-// thought.save();
+
 
     module.exports = Thought;    
 

@@ -19,37 +19,60 @@ router.get('/thoughts/:id', async (req, res) => {
     
     });
 
-// POST a new thought:
+// POST/create a new thought:
 
 router.post('/thoughts', async (req, res) => {
     const newThought = new Thought({
         thoughtText: req.body.thoughtText,
         username: req.body.username,
-        reactions: [
-            {
-                reactionBody: req.body.reactionBody,
-                username: req.body.username
-            }
-        ]
+        // reactions: [
+        //     {
+        //         reactionBody: req.body.reactionBody,
+        //         username: req.body.username
+        //     }
+        // ]
     })
     await newThought.save()
-    res.send(newThought)
+    res.json(newThought)
 })
 
-// PUT to update a user by its _id
+
+// POST - REACTION
+router.post("/thoughts/reaction/:id", async (req, res) => {
+    try {
+        const reaction = await Thought.findOne({ _id: req.params.id })
+        
+        if (req.body.reactionBody){
+            reaction.reactionBody = req.body.reactionBody
+        }
+        
+        if (req.body.username) {
+            reaction.username = req.body.username
+        }
+        
+        await reaction.save()
+        res.send(reaction)
+    }catch {
+        res.status(404)
+        res.send({ error: "user doesn't exist"})
+    }
+})
+
+
+// UPDATE THOUGHT
 
 router.patch("/thoughts/:id", async (req, res) => {
     try {
         const thought = await Thought.findOne({ _id: req.params.id })
-
+        
         if (req.body.thoughtText){
             thought.thoughtText = req.body.thoughtText
         }
-
+        
         if (req.body.username) {
             thought.username = req.body.username
         }
-
+        
         await thought.save()
         res.send(thought)
     }catch {
@@ -58,34 +81,63 @@ router.patch("/thoughts/:id", async (req, res) => {
     }
 })
 
-// DELETE to remove user by its _id
+//REACTION
 
-router.delete("/thoughts/:id", async (req, res) => {
-    try{
-        await Thought.deleteOne({ _id: req.params.id })
-        res.status(204).send().then({message: "deleted"})
-  
+router.patch("/reaction/:id", async (req, res) => {
+    try {
+        const thought = await Thought.findOne({ _id: req.params.id })
+
+
+        if (req.body.reactionBody){
+            thought.reactions.reactionbody = req.body.reactionBody
+        }
+        
+        //       reactions: [
+        //     {
+        //         reactionBody: req.body.reactionBody,
+        //         username: req.body.username
+        //     }
+        // ]
+
+        
+
+        // if (req.body.reactionBody){
+        //     thought.reactionBody = req.body.reactionBody
+        // }
+        
+        // if (req.body.username) {
+        //     thought.username = req.body.username
+        // }
+        
+        await thought.reactions.save()
+        res.send(thought.reactions)
     }catch {
         res.status(404)
-        res.send({ error: "post doesn't exisit!" })
+        res.send({ error: "user doesn't exist"})
     }
 })
 
-// router.post('/thoughts/reactions/:id', async (req, res) => {
-//     const thoughts = new Thought;
-//     const reaction = new reactions {
-//         reactionBody: 
-//         [
-//         {
-//             reactionBody: req.body.reactionBody,
 
-//         }
-//     ]
+// DELETE to remove user by its _id
+
+router.delete('/thoughts/:id', async (req, res) => {
+    const thoughts = await Thought.deleteOne({ _id: req.params.id})
+    res.send(console.log("deleted"))
+    
+    });
+
+// router.delete("/:id", async (req, res) => {
+//     try{
+//         await User.deleteOne({ _id: req.params.id })
+        
+//         res.status(204).send()
+//     }catch {
+//         res.status(404)
+//         res.send({ error: "post doesn't exisit! but we are in the right place" })
 //     }
-
-//     await reaction.save()
-//     res.send(reaction)
 // })
+
+
 
 // BONUS: Remove a user's associated thoughts when deleted.
 

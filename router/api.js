@@ -33,18 +33,16 @@ router.post('/users', async (req, res) => {
 
 // PUT to update a user by its _id
 
-router.patch("/users/:id", async (req, res) => {
+router.put("/users/:id", async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.params.id })
+        const user = await User.findOneAndUpdate({ _id: req.params.id })
 
         if (req.body.username){
             user.username = req.body.username
-        }
-
-        if (req.body.password) {
             user.email = req.body.email
         }
 
+    
         await user.save()
         res.send(user)
     }catch {

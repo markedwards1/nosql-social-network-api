@@ -46,7 +46,12 @@ const userSchema = new Schema(
               ref: Thought,
             },
           ],
-          friends: [this],
+          friends: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: "user",
+            },
+          ],
 
     },
 
@@ -68,14 +73,7 @@ const userSchema = new Schema(
     
     const User = model('user', userSchema);
 
-    // const user = new User({
-    //    username: "  abc",
-    //    email: "mark@mail.com",
-    //    thoughts: [],
-    //    friends: []
-    // })
-    // console.log(user);
-    // user.save();
+  
     
     module.exports = User;    
 
