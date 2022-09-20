@@ -63,6 +63,27 @@ router.delete("/users/:id", async (req, res) => {
     }
 })
 
+// add friend
+router.post('/create-friend/:id/:friendId', async (req, res) => {
+    await User.findOneAndUpdate({ _id: req.params.id },
+        {$push: {friends :req.params.friendId}}
+       )
+       
+       res.send({ message: "you got a friend"})
+   })
+
+
+// delete friend
+router.put('/delete-friend/:id/:friendId', (req, res) => {
+    User.findOneAndRemove(
+        {_id: req.params.id},
+        {$pull: {friends: req.params.friendId}}
+        
+        
+        )
+        res.send("no friends")
+})
+
 // BONUS: Remove a user's associated thoughts when deleted.
 
 module.exports = router;
