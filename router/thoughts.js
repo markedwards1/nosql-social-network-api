@@ -54,11 +54,12 @@ router.patch("/update/:id", async (req, res) => {
   }
 });
 
-// DELETE to remove user by its _id
+// DELETE THOUGHT
 
 router.delete("/delete/:id", async (req, res) => {
-  const thoughts = await Thought.deleteOne({ _id: req.params.id });
-  res.send(console.log("deleted"));
+  await Thought.findOneAndDelete({ _id: req.params.id }
+    );
+  res.send({ message: "Thought Deleted"});
 });
 
 //CREATE A REACTION

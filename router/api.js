@@ -33,30 +33,48 @@ router.post('/users', async (req, res) => {
 
 // PUT to update a user by its _id
 
-router.put("/users/:id", async (req, res) => {
-    try {
-        const user = await User.findOneAndUpdate({ _id: req.params.id })
+// router.put("/users/:id", async (req, res) => {
+//     try {
+//         const user = await User.findOneAndUpdate({ _id: req.params.id })
 
-        if (req.body.username){
-            user.username = req.body.username
-            user.email = req.body.email
-        }
+//         if (req.body.username){
+//             user.username = req.body.username
+//             user.email = req.body.email
+//         }
 
     
-        await user.save()
-        res.send(user)
-    }catch {
-        res.status(404)
-        res.send({ error: "user doesn't exist"})
-    }
-})
+//         await user.save()
+//         res.send(user)
+//     }catch {
+//         res.status(404)
+//         res.send({ error: "user doesn't exist"})
+//     }
+// })
+
+router.put("/update-user/:id",  (req, res) => {
+     User.findOneAndUpdate(
+        {_id: req.params.id},
+        {
+            username: req.body.username,
+            email: req.body.email
+              
+        },
+        
+        { new : true }
+    ).then((data) => {
+        if(!data) {
+            return res.status(400).json({ message: "user did not update"});
+        }
+        res.json(data)
+    });
+});
 
 // DELETE to remove user by its _id
 
 router.delete("/users/:id", async (req, res) => {
     try{
         await User.deleteOne({ _id: req.params.id })
-        res.status(204).send()
+        res.status(200).send({ message: "Bye Felicia"})
     }catch {
         res.status(404)
         res.send({ error: "post doesn't exisit!" })
@@ -65,9 +83,14 @@ router.delete("/users/:id", async (req, res) => {
 
 // add friend
 router.post('/create-friend/:id/:friendId', async (req, res) => {
-    await User.findOneAndUpdate({ _id: req.params.id },
+    await  User.findOneAndUpdate({ _id: req.params.id },
         {$push: {friends :req.params.friendId}}
-       )
+       ).then((data) => {
+        if(!data) {
+            return res.status(400).json({ error: "no user id found"})
+        }
+       
+       })
        
        res.send({ message: "you got a friend"})
    })
@@ -83,7 +106,7 @@ router.put('/delete-friend/:id/:friendId', async (req, res) => {
             if (!data) {
                 return res.status(400).json({ message: "did not update friends"});
             }
-            res.json(data)
+            res.json(data.username + " has successfully got no friends")
         });
         
 });
