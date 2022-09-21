@@ -74,15 +74,19 @@ router.post('/create-friend/:id/:friendId', async (req, res) => {
 
 
 // delete friend
-router.put('/delete-friend/:id/:friendId', (req, res) => {
-    User.findOneAndRemove(
+router.put('/delete-friend/:id/:friendId', async (req, res) => {
+   await User.findOneAndUpdate(
         {_id: req.params.id},
         {$pull: {friends: req.params.friendId}}
-        
-        
         )
-        res.send("no friends")
-})
+        .then((data) => {
+            if (!data) {
+                return res.status(400).json({ message: "did not update friends"});
+            }
+            res.json(data)
+        });
+        
+});
 
 // BONUS: Remove a user's associated thoughts when deleted.
 
