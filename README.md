@@ -26,8 +26,8 @@ Getting the app running
 
 ## Usage
 Check out this video for how to use the application. 
+[Demonstration Video Link](https://drive.google.com/file/d/1Yb_16OT-yYD7lokSWpkiQQcAgLxyuaHH/view?usp=sharing)
 
-- Insert link here
 
 ## Credits
 - The gang at Trillogy, and Sam and James from University of Western Australia. 
