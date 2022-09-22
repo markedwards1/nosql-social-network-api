@@ -10,14 +10,12 @@ router.get("/get-all", async (req, res) => {
 });
 
 // GET a single thought by its _id and populated thought and friend data
-
 router.get("/get-by-id/:id", async (req, res) => {
   const thoughts = await Thought.findOne({ _id: req.params.id });
   res.send(thoughts);
 });
 
 // POST/create a new thought:
-
 router.post("/create", async (req, res) => {
   const newThought = new Thought({
     thoughtText: req.body.thoughtText,
@@ -32,8 +30,8 @@ router.post("/create", async (req, res) => {
   await newThought.save();
   res.json(newThought);
 });
-// UPDATE THOUGHT
 
+// UPDATE THOUGHT
 router.patch("/update/:id", async (req, res) => {
   try {
     const thought = await Thought.findOne({ _id: req.params.id });
@@ -55,7 +53,6 @@ router.patch("/update/:id", async (req, res) => {
 });
 
 // DELETE THOUGHT
-
 router.delete("/delete/:id", async (req, res) => {
   await Thought.findOneAndDelete({ _id: req.params.id }
     );
@@ -70,9 +67,6 @@ router.post("/create-reaction/:id", async (req, res) => {
 });
 
 //DELETE REACTION
-
-
-
 router.put("/delete-reaction/:id", (req, res) => {
   Thought.findOneAndUpdate(
     { _id: req.params.id },
@@ -85,6 +79,6 @@ router.put("/delete-reaction/:id", (req, res) => {
   });
 });
 
-// BONUS: Remove a user's associated thoughts when deleted.
+
 
 module.exports = router;

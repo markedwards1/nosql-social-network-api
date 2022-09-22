@@ -5,8 +5,6 @@ const apiRoutes = require ('./router/api');
 const thoughtRoutes = require('./router/thoughts')
 
 
-
-
 const PORT = process.env.PORT || 3001;
 const app = express();
 
